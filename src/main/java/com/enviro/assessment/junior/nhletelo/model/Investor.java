@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "investors")
@@ -70,11 +71,12 @@ public class Investor {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-    public int setAge(int age) {
-        return this.age = age;
-    }
     public int getAge() {
         return age;
     }
-
+    public void calculateAge() {
+    if (this.dateOfBirth != null) {
+        this.age = Period.between(this.dateOfBirth, LocalDate.now()).getYears();
+    }
+    }
 }
