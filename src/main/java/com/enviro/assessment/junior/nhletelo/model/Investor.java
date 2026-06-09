@@ -6,12 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "investors")
@@ -21,28 +16,22 @@ public class Investor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+
     @Column(nullable = false)
     private String firstName;
 
-    @NotBlank
     @Column(nullable = false)
     private String lastName;
 
-    @Email
-    @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
 
-    //date of birth
-    @NotNull
     @Column(nullable = false)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    @NotNull
-    @PositiveOrZero
     @Column(nullable = false)
-    private BigDecimal balance = BigDecimal.ZERO;
+    private int age;
+
 
     public Long getId() {
         return id;
@@ -75,18 +64,17 @@ public class Investor {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-
-    public BigDecimal getBalance() {
-        return balance;
+    public int setAge(int age) {
+        return this.age = age;
+    }
+    public int getAge() {
+        return age;
     }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance != null ? balance : BigDecimal.ZERO;
-    }
 }
