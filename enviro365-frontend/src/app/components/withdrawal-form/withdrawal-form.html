@@ -1,0 +1,57 @@
+<div class="form-container">
+  <h2>Submit Withdrawal</h2>
+
+  <button class="back-btn" (click)="goBack()">← Back to Dashboard</button>
+
+  <!-- Product Info -->
+  <div class="product-info" *ngIf="product">
+    <h3>{{ product.productName }}</h3>
+    <p>Type: <strong>{{ product.productType }}</strong></p>
+    <p>Current Balance: <strong>R {{ product.balance | number:'1.2-2' }}</strong></p>
+    <p class="hint">Maximum withdrawal: R {{ product.balance * 0.9 | number:'1.2-2' }} (90% of balance)</p>
+  </div>
+
+  <!-- Success -->
+  <div class="success-message" *ngIf="successMessage">
+    <h4>{{ successMessage }}</h4>
+    <div *ngIf="submittedNotice">
+      <p>Amount Withdrawn: <strong>R {{ submittedNotice.withdrawalAmount | number:'1.2-2' }}</strong></p>
+      <p>Balance Before: <strong>R {{ submittedNotice.balanceBefore | number:'1.2-2' }}</strong></p>
+      <p>Balance After: <strong>R {{ submittedNotice.balanceAfter | number:'1.2-2' }}</strong></p>
+      <p>Status: <strong>{{ submittedNotice.status }}</strong></p>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="withdrawalForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label>Product ID</label>
+      <input type="number" formControlName="productId" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Withdrawal Amount (R)</label>
+      <input
+        type="number"
+        formControlName="withdrawalAmount"
+        placeholder="Enter amount"
+        step="0.01" />
+      <span class="validation-error"
+        *ngIf="amount?.invalid && amount?.touched">
+        <span *ngIf="amount?.errors?.['required']">Amount is required.</span>
+        <span *ngIf="amount?.errors?.['min']">Amount must be greater than zero.</span>
+      </span>
+    </div>
+
+    <button type="submit" [disabled]="withdrawalForm.invalid || loading">
+      {{ loading ? 'Processing...' : 'Submit Withdrawal' }}
+    </button>
+
+  </form>
+</div><p>withdrawal-form works!</p>

@@ -1,0 +1,76 @@
+<div class="history-container">
+  <h2>Withdrawal History</h2>
+
+  <button class="back-btn" (click)="goBack()">← Back to Dashboard</button>
+
+  <!-- Filter Form -->
+  <div class="filter-section">
+    <h3>Filter by Date</h3>
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilter()">
+      <div class="filter-row">
+        <div class="form-group">
+          <label>From</label>
+          <input type="date" formControlName="from" />
+        </div>
+        <div class="form-group">
+          <label>To</label>
+          <input type="date" formControlName="to" />
+        </div>
+        <div class="filter-actions">
+          <button type="submit">Apply Filter</button>
+          <button type="button" (click)="clearFilter()">Clear</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- CSV Download -->
+  <div class="export-section">
+    <button class="export-btn" (click)="exportCsv()">
+      ⬇ Download CSV Statement
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading">Loading history...</div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && notices.length === 0">
+    No withdrawal history found.
+  </div>
+
+  <!-- Table -->
+  <table *ngIf="!loading && notices.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Amount</th>
+        <th>Balance Before</th>
+        <th>Balance After</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let notice of notices">
+        <td>{{ notice.id }}</td>
+        <td>{{ notice.productName }}</td>
+        <td>R {{ notice.withdrawalAmount | number:'1.2-2' }}</td>
+        <td>R {{ notice.balanceBefore | number:'1.2-2' }}</td>
+        <td>R {{ notice.balanceAfter | number:'1.2-2' }}</td>
+        <td>{{ notice.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
+        <td>
+          <span [class]="'status-' + notice.status.toLowerCase()">
+            {{ notice.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
