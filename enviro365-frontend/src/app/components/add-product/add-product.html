@@ -1,0 +1,53 @@
+<div class="page-container">
+  <h2>Add New Product</h2>
+
+  <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+  <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <div class="card">
+    <form [formGroup]="productForm" (ngSubmit)="createProduct()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" formControlName="productName" placeholder="Product Name" />
+          <span class="error" *ngIf="productForm.get('productName')?.invalid && productForm.get('productName')?.touched">
+            Product name is required.
+          </span>
+        </div>
+        <div class="form-group">
+          <label>Product Type</label>
+          <select formControlName="productType">
+            <option value="">Select Type</option>
+            <option value="RETIREMENT">RETIREMENT</option>
+            <option value="SAVINGS">SAVINGS</option>
+          </select>
+          <span class="error" *ngIf="productForm.get('productType')?.invalid && productForm.get('productType')?.touched">
+            Product type is required.
+          </span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Balance (R)</label>
+          <input type="number" formControlName="balance" placeholder="0.00" step="0.01" />
+          <span class="error" *ngIf="productForm.get('balance')?.invalid && productForm.get('balance')?.touched">
+            Balance must be greater than zero.
+          </span>
+        </div>
+        <div class="form-group">
+          <label>Investor</label>
+          <select formControlName="investorId">
+            <option value="">Select Investor</option>
+            <option *ngFor="let inv of investors" [value]="inv.id">
+              {{ inv.firstName }} {{ inv.lastName }}
+            </option>
+          </select>
+          <span class="error" *ngIf="productForm.get('investorId')?.invalid && productForm.get('investorId')?.touched">
+            Investor is required.
+          </span>
+        </div>
+      </div>
+      <button type="submit" [disabled]="productForm.invalid">Add Product</button>
+    </form>
+  </div>
+</div>
