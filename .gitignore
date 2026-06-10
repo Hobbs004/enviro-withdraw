@@ -29,5 +29,13 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+###Spring Boot
+target/
+
+### Angular
+enviro365-frontend/node_modules/
+enviro365-frontend/dist/
+
+
 ### VS Code ###
 .vscode/
