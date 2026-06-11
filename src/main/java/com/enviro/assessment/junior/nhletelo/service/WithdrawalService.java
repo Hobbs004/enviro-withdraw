@@ -111,16 +111,18 @@ public class WithdrawalService {
                 .collect(Collectors.toList());
     }
 
-    private WithdrawalNoticeDTO mapToDTO(WithdrawalNotice notice) {
-        WithdrawalNoticeDTO dto = new WithdrawalNoticeDTO();
-        dto.setId(notice.getId());
-        dto.setProductId(notice.getProduct().getId());
-        dto.setProductName(notice.getProduct().getProductName());
-        dto.setWithdrawalAmount(notice.getWithdrawalAmount());
-        dto.setBalanceBefore(notice.getBalanceBefore());
-        dto.setBalanceAfter(notice.getBalanceAfter());
-        dto.setCreatedAt(notice.getCreatedAt());
-        dto.setStatus(notice.getStatus());
-        return dto;
-    }
+  private WithdrawalNoticeDTO mapToDTO(WithdrawalNotice notice) {
+    WithdrawalNoticeDTO dto = new WithdrawalNoticeDTO();
+    dto.setId(notice.getId());
+    dto.setProductId(notice.getProduct().getId());
+    dto.setProductName(notice.getProduct().getProductName());
+    dto.setInvestorName(notice.getProduct().getInvestor().getFirstName() + " "
+            + notice.getProduct().getInvestor().getLastName());
+    dto.setWithdrawalAmount(notice.getWithdrawalAmount());
+    dto.setBalanceBefore(notice.getBalanceBefore());
+    dto.setBalanceAfter(notice.getBalanceAfter());
+    dto.setCreatedAt(notice.getCreatedAt());
+    dto.setStatus(notice.getStatus());
+    return dto;
+}
 }

@@ -1,5 +1,5 @@
 .history-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 40px auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -7,23 +7,52 @@
 
 h2 {
   color: #003366;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: #003366;
-  cursor: pointer;
-  font-size: 14px;
+.card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
   margin-bottom: 20px;
-  padding: 0;
-  text-decoration: underline;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  max-width: 350px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: #fff;
+}
+
+select:focus {
+  border-color: #003366;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
 }
 
 .filter-section {
   background: #f5f5f5;
-  padding: 15px;
+  padding: 20px;
   border-radius: 8px;
   margin-bottom: 20px;
 }
@@ -33,22 +62,11 @@ h2 {
   gap: 20px;
   align-items: flex-end;
   flex-wrap: wrap;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-label {
-  font-weight: bold;
-  font-size: 14px;
-  color: #333;
+  margin-bottom: 15px;
 }
 
 input[type="date"] {
-  padding: 8px;
+  padding: 9px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
@@ -59,18 +77,15 @@ input[type="date"] {
   gap: 10px;
 }
 
-.export-section {
-  margin-bottom: 20px;
-}
-
 .export-btn {
   background: #006600;
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: bold;
 }
 
 .export-btn:hover {
@@ -80,25 +95,37 @@ input[type="date"] {
 .error-message {
   background: #ffe0e0;
   color: #cc0000;
-  padding: 10px;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 6px;
   margin-bottom: 15px;
+  border-left: 4px solid #cc0000;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: #666;
 }
 
 .empty-state {
   text-align: center;
   padding: 40px;
   color: #666;
-  font-size: 16px;
+  font-size: 15px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 750px;
 }
 
 th, td {
-  padding: 12px;
+  padding: 12px 15px;
   border: 1px solid #ddd;
   text-align: left;
   font-size: 14px;
@@ -113,28 +140,36 @@ tr:nth-child(even) {
   background: #f9f9f9;
 }
 
-.status-approved {
-  color: #006600;
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
   font-weight: bold;
+}
+
+.status-approved {
+  background: #e0ffe0;
+  color: #006600;
 }
 
 .status-rejected {
+  background: #ffe0e0;
   color: #cc0000;
-  font-weight: bold;
 }
 
 .status-pending {
+  background: #fff8e0;
   color: #cc7700;
-  font-weight: bold;
 }
 
 button {
   background: #003366;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 9px 18px;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
 }
 
 button:hover {

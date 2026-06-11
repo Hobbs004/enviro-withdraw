@@ -7,6 +7,7 @@ export interface WithdrawalNotice {
   id: number;
   productId: number;
   productName: string;
+  investorName: string;
   withdrawalAmount: number;
   balanceBefore: number;
   balanceAfter: number;

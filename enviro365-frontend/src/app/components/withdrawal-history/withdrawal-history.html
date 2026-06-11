@@ -1,9 +1,22 @@
 <div class="history-container">
   <h2>Withdrawal History</h2>
 
-  <!-- Filter Form -->
-  <div class="filter-section">
-    <h3>Filter by Date</h3>
+  <!-- Investor Selector -->
+  <div class="card">
+    <div class="form-group">
+      <label>Select Investor</label>
+      <select (change)="onInvestorChange($event)">
+        <option value="">Select Investor</option>
+        <option *ngFor="let inv of investors" [value]="inv.id">
+          {{ inv.firstName }} {{ inv.lastName }}
+        </option>
+      </select>
+      
+    </div>
+  </div>
+
+  <!-- Filter + Export -->
+  <div class="filter-section" *ngIf="investorId">
     <form [formGroup]="filterForm" (ngSubmit)="applyFilter()">
       <div class="filter-row">
         <div class="form-group">
@@ -20,55 +33,50 @@
         </div>
       </div>
     </form>
-  </div>
 
-  <!-- CSV Download -->
-  <div class="export-section">
-    <button class="export-btn" (click)="exportCsv()">
-      ⬇ Download CSV Statement
-    </button>
+    <button class="export-btn" (click)="exportCsv()"> Download CSV Statement</button>
   </div>
 
   <!-- Error -->
-  <div class="error-message" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </div>
+  <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 
   <!-- Loading -->
-  <div *ngIf="loading">Loading history...</div>
+  <div class="loading" *ngIf="loading">Loading history...</div>
 
-  <!-- Empty State -->
-  <div class="empty-state" *ngIf="!loading && notices.length === 0">
-    No withdrawal history found.
+  <!-- Empty -->
+  <div class="empty-state" *ngIf="!loading && investorId && notices.length === 0">
+    No withdrawal history found for this investor.
   </div>
 
   <!-- Table -->
-  <table *ngIf="!loading && notices.length > 0">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Product</th>
-        <th>Amount</th>
-        <th>Balance Before</th>
-        <th>Balance After</th>
-        <th>Date</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let notice of notices">
-        <td>{{ notice.id }}</td>
-        <td>{{ notice.productName }}</td>
-        <td>R {{ notice.withdrawalAmount | number:'1.2-2' }}</td>
-        <td>R {{ notice.balanceBefore | number:'1.2-2' }}</td>
-        <td>R {{ notice.balanceAfter | number:'1.2-2' }}</td>
-        <td>{{ notice.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
-        <td>
-          <span [class]="'status-' + notice.status.toLowerCase()">
-            {{ notice.status }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper" *ngIf="!loading && notices.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Investor</th>
+          <th>Product Name</th>
+          <th>Withdrawal Amount (R)</th>
+          <th>Balance Before (R)</th>
+          <th>Balance After (R)</th>
+          <th>Date & Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notice of notices">
+          <td>{{ notice.investorName }} </td>
+          <td>{{ notice.productName }}</td>
+          <td>R {{ notice.withdrawalAmount | number:'1.2-2' }}</td>
+          <td>R {{ notice.balanceBefore | number:'1.2-2' }}</td>
+          <td>R {{ notice.balanceAfter | number:'1.2-2' }}</td>
+          <td>{{ notice.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
+          <td>
+            <span [class]="'status-badge status-' + notice.status.toLowerCase()">
+              {{ notice.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,8 +1,6 @@
 package com.enviro.assessment.junior.nhletelo.service;
 
 import com.enviro.assessment.junior.nhletelo.dto.WithdrawalNoticeDTO;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -14,13 +12,11 @@ import java.util.List;
  * Writes directly to an OutputStream to avoid large in-memory string buffers.
  */
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class CsvExportService {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final String[] CSV_HEADER = {
-            "Notice ID", "Product ID", "Product Name",
+            "Investor", "Product Name",
             "Withdrawal Amount (R)", "Balance Before (R)", "Balance After (R)",
             "Date & Time", "Status"
     };
@@ -33,9 +29,8 @@ public class CsvExportService {
 
             // Data rows
             for (WithdrawalNoticeDTO n : notices) {
-                writer.printf("%d,%d,\"%s\",%.2f,%.2f,%.2f,\"%s\",%s%n",
-                        n.getId(),
-                        n.getProductId(),
+                writer.printf("\"%s\",\"%s\",%.2f,%.2f,%.2f,\"%s\",%s%n",
+                        escapeCsv(n.getInvestorName()),
                         escapeCsv(n.getProductName()),
                         n.getWithdrawalAmount(),
                         n.getBalanceBefore(),
@@ -46,7 +41,6 @@ public class CsvExportService {
             }
             writer.flush();
         }
-        log.info("CSV export generated: {} records", notices.size());
     }
 
     private String escapeCsv(String value) {
