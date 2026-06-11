@@ -1,29 +1,56 @@
 <div class="page-container">
-  <h2>Dashboard</h2>
+
+  <div class="hero">
+    <h2>Welcome to Enviro365 Investments</h2>
+    <p>Manage your investment portfolio, submit withdrawals, and track your financial history.</p>
+  </div>
 
   <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
-   <div *ngIf="loading">Loading investors...</div> 
 
-  <div class="investors-grid" *ngIf="!loading">
-    <div
-      class="investor-card"
-      *ngFor="let investor of investors"
-      (click)="selectInvestor(investor)"
-      [class.active]="selectedInvestor?.id === investor.id">
-      <h4>{{ investor.firstName }} {{ investor.lastName }}</h4>
-      <p>{{ investor.email }}</p>
-      <p>Age: {{ investor.age }}</p>
+  <!-- Loading Spinner -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading investors...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && investors.length === 0 && !errorMessage">
+    <p>No investors found. <a routerLink="/add-investor">Add your first investor</a></p>
+  </div>
+
+  <!-- Investors Grid -->
+  <div *ngIf="!loading && investors.length > 0">
+    <h3 class="section-title">Select an Investor to View Portfolio</h3>
+    <div class="investors-grid">
+      <div
+        class="investor-card"
+        *ngFor="let investor of investors"
+        (click)="selectInvestor(investor)"
+        [class.active]="selectedInvestor?.id === investor.id">
+        <div class="investor-avatar">{{ investor.firstName[0] }}{{ investor.lastName[0] }}</div>
+        <h4>{{ investor.firstName }} {{ investor.lastName }}</h4>
+        <p>{{ investor.email }}</p>
+        <p>Age: <strong>{{ investor.age }}</strong></p>
+      </div>
     </div>
   </div>
 
-  <div class="card" *ngIf="selectedInvestor">
+  <!-- Portfolio Section -->
+  <div class="portfolio-section" *ngIf="selectedInvestor">
     <div class="portfolio-header">
-      <h3>{{ selectedInvestor.firstName }}'s Portfolio</h3>
-      <button (click)="goToHistory()">View Withdrawal History</button>
+      <h3>{{ selectedInvestor.firstName }} {{ selectedInvestor.lastName }}'s Portfolio</h3>
+      <button class="history-btn" (click)="goToHistory()">View Withdrawal History</button>
     </div>
 
-    <div *ngIf="selectedInvestor.products.length === 0" class="empty">
-      No products found. <a routerLink="/add-product">Add a product</a>
+    <div class="info-banner">
+      <span></span>
+      <span>You can withdraw up to <strong>90%</strong> of any product balance.
+        Retirement products require investor age above <strong>65</strong>.</span>
+    </div>
+
+    <div class="empty-state" *ngIf="selectedInvestor.products.length === 0">
+      No products found for this investor.
+      <a routerLink="/add-product">Add a product</a>
     </div>
 
     <table *ngIf="selectedInvestor.products.length > 0">
@@ -38,11 +65,18 @@
       <tbody>
         <tr *ngFor="let product of selectedInvestor.products">
           <td>{{ product.productName }}</td>
-          <td>{{ product.productType }}</td>
+          <td>
+            <span [class]="'badge badge-' + product.productType.toLowerCase()">
+              {{ product.productType }}
+            </span>
+          </td>
           <td>R {{ product.balance | number:'1.2-2' }}</td>
-          <td><button (click)="goToWithdrawal(product.id)">Withdraw</button></td>
+          <td>
+            <button class="withdraw-btn" (click)="goToWithdrawal(product.id)">Withdraw</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+
 </div>
