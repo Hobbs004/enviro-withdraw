@@ -6,7 +6,10 @@ import { NavbarComponent } from './components/navbar/navbar';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent],
-  template: `<router-outlet />`
+  template: `
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+  `
 })
 export class AppComponent {
   title = 'enviro365-frontend';
