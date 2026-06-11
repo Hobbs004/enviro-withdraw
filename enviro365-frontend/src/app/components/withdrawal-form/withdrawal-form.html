@@ -1,17 +1,8 @@
 <div class="form-container">
   <h2>Submit Withdrawal</h2>
 
-  <button class="back-btn" (click)="goBack()">← Back to Dashboard</button>
-
-  <!-- Product Info -->
-  <div class="product-info" *ngIf="product">
-    <h3>{{ product.productName }}</h3>
-    <p>Type: <strong>{{ product.productType }}</strong></p>
-    <p>Current Balance: <strong>R {{ product.balance | number:'1.2-2' }}</strong></p>
-    <p class="hint">Maximum withdrawal: R {{ product.balance * 0.9 | number:'1.2-2' }} (90% of balance)</p>
-  </div>
-
-  <!-- Success -->
+ 
+ <!-- Success -->
   <div class="success-message" *ngIf="successMessage">
     <h4>{{ successMessage }}</h4>
     <div *ngIf="submittedNotice">
@@ -23,35 +14,64 @@
   </div>
 
   <!-- Error -->
-  <div class="error-message" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </div>
+  <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 
   <!-- Form -->
-  <form [formGroup]="withdrawalForm" (ngSubmit)="onSubmit()">
+  <div class="card">
+    <form [formGroup]="withdrawalForm" (ngSubmit)="onSubmit()">
 
-    <div class="form-group">
-      <label>Product ID</label>
-      <input type="number" formControlName="productId" readonly />
-    </div>
+      <!-- Investor Dropdown -->
+      <div class="form-group">
+        <label>Investor</label>
+        <select formControlName="investorId" (change)="onInvestorChange()">
+          <option value="">Select Investor</option>
+          <option *ngFor="let inv of investors" [value]="inv.id">
+            {{ inv.firstName }} {{ inv.lastName }}
+          </option>
+        </select>
+        <span class="error" *ngIf="withdrawalForm.get('investorId')?.invalid && withdrawalForm.get('investorId')?.touched">
+          Please select an investor.
+        </span>
+      </div>
 
-    <div class="form-group">
-      <label>Withdrawal Amount (R)</label>
-      <input
-        type="number"
-        formControlName="withdrawalAmount"
-        placeholder="Enter amount"
-        step="0.01" />
-      <span class="validation-error"
-        *ngIf="amount?.invalid && amount?.touched">
-        <span *ngIf="amount?.errors?.['required']">Amount is required.</span>
-        <span *ngIf="amount?.errors?.['min']">Amount must be greater than zero.</span>
-      </span>
-    </div>
+      <!-- Product Dropdown -->
+      <div class="form-group">
+        <label>Investment Product</label>
+        <select formControlName="productId" (change)="onProductChange()" [attr.disabled]="products.length === 0 ? true : null">
+          <option value="">Select Product</option>
+          <option *ngFor="let p of products" [value]="p.id">
+            {{ p.productName }} ({{ p.productType }})
+          </option>
+        </select>
+        <span class="error" *ngIf="withdrawalForm.get('productId')?.invalid && withdrawalForm.get('productId')?.touched">
+          Please select a product.
+        </span>
+      </div>
 
-    <button type="submit" [disabled]="withdrawalForm.invalid || loading">
-      {{ loading ? 'Processing...' : 'Submit Withdrawal' }}
-    </button>
+      <!-- Product Info -->
+      <div class="product-info" *ngIf="selectedProduct">
+        <p>Current Balance: <strong>R {{ selectedProduct.balance | number:'1.2-2' }}</strong></p>
+        <p class="hint">Maximum withdrawal: <strong>R {{ selectedProduct.balance * 0.9 | number:'1.2-2' }}</strong> (90% of balance)</p>
+      </div>
 
-  </form>
-</div><p>withdrawal-form works!</p>
+      <!-- Amount -->
+      <div class="form-group">
+        <label>Withdrawal Amount (R)</label>
+        <input
+          type="number"
+          formControlName="withdrawalAmount"
+          placeholder="Enter amount"
+          step="0.01" />
+        <span class="error" *ngIf="amount?.invalid && amount?.touched">
+          <span *ngIf="amount?.errors?.['required']">Amount is required.</span>
+          <span *ngIf="amount?.errors?.['min']">Amount must be greater than zero.</span>
+        </span>
+      </div>
+
+      <button type="submit" [disabled]="withdrawalForm.invalid || loading">
+        {{ loading ? 'Processing...' : 'Submit Withdrawal' }}
+      </button>
+
+    </form>
+  </div>
+</div>
